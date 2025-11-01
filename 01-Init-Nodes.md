@@ -20,6 +20,7 @@ sudo sysctl -p /etc/sysctl.conf
 # disable swap
 sudo swapoff -a
 # then, in /etc/fstab, remove swap mounting on boot
+sudo rm /swap.img
 # install containerd
 wget https://github.com/containerd/containerd/releases/download/v2.1.4/containerd-2.1.4-linux-arm64.tar.gz
 sudo tar Cxzvf /usr/local ./containerd-2.1.4-linux-arm64.tar.gz
@@ -30,7 +31,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now containerd
 # install runc
 wget https://github.com/opencontainers/runc/releases/download/v1.3.2/runc.arm64
-sudo install -m 755 runc.amd64 /usr/local/sbin/runc
+sudo install -m 755 runc.arm64 /usr/local/sbin/runc
 # install cni plugin
 wget https://github.com/containernetworking/plugins/releases/download/v1.8.0/cni-plugins-linux-arm-v1.8.0.tgz
 sudo mkdir -p /opt/cni/bin
