@@ -63,9 +63,34 @@ apiVersion: kubeadm.k8s.io/v1beta4
 kind: ClusterConfiguration
 clusterName: cka-cluster
 ```
-Init:
 ```sh
 sudo kubeadm init --config ./kubeadm-init-config.yaml --dry-run
 # if ok,
 sudo kubeadm init --config ./kubeadm-init-config.yaml
+```
+Import kubeconfig:
+```
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+4. Join worker node
+To get default config file template, `kubeadm config print join-defaults > kubeadm-join-config.yaml`
+### kubeadm-join-config.yaml
+```yaml
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: JoinConfiguration
+discovery:
+  bootstrapToken:
+    apiServerEndpoint: CONTROL_PLANE_IP_ADDRESS:6443
+    token: TOKEN_HERE
+    caCertHashes:
+    - CA_CERT_HASH_HERE
+nodeRegistration:
+  name: worker-1
+```
+```sh
+sudo kubeadm join --config ./kubeadm-join-config.yaml --dry-run
+# if ok,
+sudo kubeadm join --config ./kubeadm-join-config.yaml
 ```
