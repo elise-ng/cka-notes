@@ -142,5 +142,6 @@ metadata:
 ```
 ```sh
 kubectl create -f calico-custom-resources.yaml
+kubectl create namespace calico-system
 ```
 
