@@ -7,8 +7,10 @@ On VM: 2 CPU 4G RAM, 64G SSD
 ## Steps
 0. Create VM with Ubuntu 24.04.3
 1. Setup containerd:
-Ref: [https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/](k8s docs: install kubeadm)
-Ref: [https://github.com/containerd/containerd/blob/main/docs/getting-started.md](containerd docs: install)
+Ref: [k8s docs - install kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)
+
+Ref: [containerd docs - install](https://github.com/containerd/containerd/blob/main/docs/getting-started.md)
+
 ```
 # disable swap
 sudo swapoff -a
