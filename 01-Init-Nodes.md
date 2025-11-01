@@ -11,7 +11,7 @@ Ref: [k8s docs - install kubeadm](https://kubernetes.io/docs/setup/production-en
 
 Ref: [containerd docs - install](https://github.com/containerd/containerd/blob/main/docs/getting-started.md)
 
-```
+```sh
 # enable ip forwarding
 # in /etc/sysctl.conf,
 # uncomment net.ipv4.ip_forward=1
@@ -38,7 +38,7 @@ sudo mkdir -p /opt/cni/bin
 sudo tar Cxzvf /opt/cni/bin cni-plugins-linux-arm-v1.8.0.tgz
 ```
 2. Setup kubeadm:
-```
+```sh
 sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates curl gpg
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.34/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
@@ -47,4 +47,25 @@ sudo apt-get update
 sudo apt-get install -y kubelet kubeadm kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
 sudo systemctl enable --now kubelet
+```
+3. Setup control plane
+To get default config file template, `kubeadm config print init-defaults > kubeadm-init-config.yaml`
+### kubeadm-init-config.yaml
+```yaml
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: 192.168.64.7
+nodeRegistration:
+  name: control-1
+---
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: ClusterConfiguration
+clusterName: cka-cluster
+```
+Init:
+```sh
+sudo kubeadm init --config ./kubeadm-init-config.yaml --dry-run
+# if ok,
+sudo kubeadm init --config ./kubeadm-init-config.yaml
 ```
