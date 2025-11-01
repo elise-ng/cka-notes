@@ -74,7 +74,7 @@ mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
-4. Join worker node
+4. Join worker nodes
 To get default config file template, `kubeadm config print join-defaults > kubeadm-join-config.yaml`
 ### kubeadm-join-config.yaml
 ```yaml
@@ -94,3 +94,53 @@ sudo kubeadm join --config ./kubeadm-join-config.yaml --dry-run
 # if ok,
 sudo kubeadm join --config ./kubeadm-join-config.yaml
 ```
+Repeat for worker-2
+
+5. Install calico (network add-on for pods to communicate)
+Ref: [calico docs](https://docs.tigera.io/calico/latest/getting-started/kubernetes/self-managed-public-cloud/gce)
+```
+kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.31.0/manifests/operator-crds.yaml
+kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.31.0/manifests/tigera-operator.yaml
+```
+### calico-custom-resources.yaml
+```yaml
+apiVersion: operator.tigera.io/v1
+kind: Installation
+metadata:
+  name: default
+spec:
+  # Configures Calico networking.
+  calicoNetwork:
+    ipPools:
+      - name: default-ipv4-ippool
+        blockSize: 26
+        cidr: 10.42.0.0/16
+        encapsulation: VXLANCrossSubnet
+        natOutgoing: Enabled
+        nodeSelector: all()
+
+---
+apiVersion: operator.tigera.io/v1
+kind: APIServer
+metadata:
+  name: default
+spec: {}
+
+---
+# Configures the Calico Goldmane flow aggregator.
+apiVersion: operator.tigera.io/v1
+kind: Goldmane
+metadata:
+  name: default
+
+---
+# Configures the Calico Whisker observability UI.
+apiVersion: operator.tigera.io/v1
+kind: Whisker
+metadata:
+  name: default
+```
+```sh
+kubectl create -f calico-custom-resources.yaml
+```
+
