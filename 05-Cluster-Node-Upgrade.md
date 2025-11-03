@@ -60,3 +60,28 @@ kubectl uncordon CONTROL_NODE_NAME
 # check status
 kubectl get nodes
 ```
+
+## Update worker node
+
+https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/upgrading-linux-nodes/
+
+```sh
+# On worker
+# After updating apt source and kubeadm
+# Update kubelet config
+sudo kubeadm upgrade node
+# Drain target node
+kubectl drain WORKER_NODE_NAME --ignore-daemonsets
+# update kubelet and kubectl
+sudo apt-mark unhold kubelet kubectl
+sudo apt update
+sudo apt install kubelet='1.XX.Y-Z' kubectl='1.XX.Y-Z'
+sudo apt-mark hold kubelet kubectl
+# restart kueblet
+sudo systemctl daemon-reload
+sudo systemctl restart kubelet
+# uncordon worker node
+kubectl uncordon WORKER_NODE_NAME
+# check status
+kubectl get nodes
+```
