@@ -1,0 +1,25 @@
+# Etcd Backup / Restore
+
+## Backup
+
+```sh
+# cli tool is not installed by default
+sudo apt install etcd-client
+
+# check version
+sudo etcdctl --help
+# it should show API version 3, otherwise will need flag ETCDCTL_API=3 for commands
+
+# get param for the running etcd process
+ps aux | grep etcd
+# look for the port and cert paths
+
+# test connection
+sudo etcdctl --endpoints=localhost:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert /etc/kubernetes/pki/etcd/server.crt --key /etc/kubernetes/pki/etcd/server.key get / --prefix --keys-only
+
+# take snapshot
+sudo etcdctl --endpoints=localhost:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert /etc/kubernetes/pki/etcd/server.crt --key /etc/kubernetes/pki/etcd/server.key snapshot save /tmp/etcd-backup.db
+
+# check summary of dump file
+sudo etcdctl --write-out=table snapshot status /tmp/etcd-backup.db
+```
