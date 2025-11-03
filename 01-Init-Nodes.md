@@ -1,5 +1,7 @@
 # Initialize nodes
 
+(Pearson CKA Course Lab 3)
+
 ## Background
 3 nodes: 1 control plane, 2 workers
 On VM: 2 CPU 4G RAM, 64G SSD
