@@ -15,7 +15,7 @@ https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-avail
 
 https://github.com/kubernetes/kubeadm/blob/main/docs/ha-considerations.md#options-for-software-load-balancing
 
-Networking Setup:
+Networking Setup: (Out-Of-Scope for CKA Exam)
 - HAProxy as load balancer, distribute traffic to healthy api servers
 - Keepalived provides floating IP that points to an active HAProxy node, failovers if one of the LB fails
 - (on cloud env) Kube API endpoint points to the virtual ip of keepalived
@@ -23,7 +23,7 @@ Networking Setup:
 - kubectl clients connect to VIP:6443
 - verify connectivity with `nc <VIP> 6443`
 
-Cluster Setup:
+Cluster Setup: (In-Scope for CKA Exam)
 - Similar to basic setup, but we use the HA control plane endpoint
 
 ```sh
