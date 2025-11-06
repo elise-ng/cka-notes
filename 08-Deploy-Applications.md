@@ -25,6 +25,8 @@ kubectl set image deploy mydeploy nginx=nginx:1.29
 
 ### Example DaemonSet
 
+(We can generate template by `kubectl create deploy mydaemon --image=myimage --dry-run=client -o yaml`, then change kind to `DaemonSet` and remove `replicas` and `strategy` options)
+
 ```yaml
 apiVersion: apps/v1
 kind: DaemonSet
