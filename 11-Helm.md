@@ -19,5 +19,25 @@
 
 ```sh
 helm repo add <repo name> <repo url>
-helm install <app name> <repo>/<package>
+helm install <app name> <chart name>
+```
+
+## Helm Demo
+```sh
+helm repo add bitnami https://charts.bitnami.com/bitnami
+# show added repos
+helm repo list
+# search packages on repo
+helm search repo nginx
+# search for versions
+helm search repo nginx --versions
+
+# sync local with repo
+helm repo update
+# test install mysql
+helm install bitnami/mysql --generate-name
+# list installed charts
+helm list
+# check install status
+helm status mysql-1762393608
 ```
