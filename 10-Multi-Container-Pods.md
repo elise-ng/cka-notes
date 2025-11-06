@@ -5,8 +5,42 @@
   - Ambassador: proxy to connect containers externally
   - Adapter: standardize or normalize main container output
   - Since v1.29, initContainer that has `restartPolicy: always` is also referred to as Sidecar
-- Pod Volumes as shared storage: e.g. main container write to it, helper pod pick up data
+- Pod Volumes as shared storage (emptyDir or PV): e.g. main container write to it, helper pod pick up data
 
-## Demo Sidecar Logging
+## Demo Sidecar
+
+https://kubernetes.io/docs/concepts/storage/volumes/#emptydir-configuration-example
+
+```sh
+kubectl apply -f sidecardemo.yaml
+# side car can access file modified by main container
+kubectl exec -it sidecardemo -c sidecar -- cat /usr/lib/nginx/html/index.html
 ```
+
+`sidecardemo.yaml`
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sidecardemo
+spec:
+  containers:
+  - image: busybox
+    args:
+    - sh
+    - -c
+    - echo hello > /messages/index.html
+    name: main
+    volumeMounts:
+    - mountPath: /messages
+      name: cache-volume
+  - image: nginx
+    name: sidecar
+    volumeMounts:
+    - mountPath: /usr/lib/nginx/html
+      name: cache-volume
+  volumes:
+  - name: cache-volume
+    emptyDir:
+      sizeLimit: 50Mi
 ```
