@@ -13,3 +13,11 @@
   - a Helm package
   - contains description and templates of k8s manifest files
   - can be stored locally or access from remote repos
+- Main site for helm charts: https://artifacthub.io/
+
+### Usual usage
+
+```sh
+helm repo add <repo name> <repo url>
+helm install <app name> <repo>/<package>
+```
