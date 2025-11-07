@@ -28,3 +28,30 @@ kubectl get all -n limited
 # raise quota by edit
 kubectl edit quota -n limited
 ```
+
+## Demo: Set LimitRange
+
+https://kubernetes.io/docs/concepts/policy/limit-range/
+
+```sh
+kubectl create ns limitrange
+kubectl apply -f limitrange.yaml -n limitrange
+kubectl run limitpod -n limitrange --image=nginx
+# check the default is applied to pod
+kubectl describe pod limitpod -n limitrange
+```
+
+`limitrange.yaml`
+```yaml
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: mem-limit-range
+spec:
+  limits:
+  - default:
+      memory: 512Mi
+    defaultRequest:
+      memory: 256Mi
+    type: Container
+```
