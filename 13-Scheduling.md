@@ -27,3 +27,22 @@ https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinit
 - `matchExpression` used to define a `key`, `operator` and one or more `values` (instead of simple kv label matching)
   - operators: `In`, `Exists`, `Gt`, `Lt`
   - (anti-affinity) operators: `NotIn`, `DoesNotExist`
+
+## Taints and Tolerations
+
+https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
+
+- taints are applied to node to mark that the node should not accept any pod that doesn't tolerate the taint
+- tolerations are applied to pods and allow (not require) pods to schedule on nodes with matching taints
+- vs affinity: affinity used on pods to atract them to specific nodes; taints used on nodes to repel set of pods
+- ensure dedicated nodes are used for dedicated tasks
+- `NoSchedule`: does not schedule new pods
+- `PreferNoSchedule`: does not schedule new pods unless there is not other option
+- `NoExecute`: migrates existing pods away from this node
+- control plane nodes automatically get taints to avoid scheduling user pods
+- `kubectl drain` and `kubectl cordon` applies taints
+- taints are set automatically when node has critical condition e.g. out of disk space, network unavailable, memory pressure
+- `kubectl taint` or `kubectl edit` to manually taint nodes
+- when defining toleration, the pod needs `key`, `operator`, `value`
+  - default operator is `Equal` but `Exists` is also commonly used
+  - 
