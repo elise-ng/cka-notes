@@ -46,3 +46,26 @@ https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
 - `kubectl taint` or `kubectl edit` to manually taint nodes
 - when defining toleration, the pod needs `key`, `operator`, `value`, `effect`
   - default operator is `Equal` but `Exists` is also commonly used
+
+## Demo: Taint
+
+```sh
+kubectl taint node worker-2 diskType=hdd:NoSchedule
+kubectl create deploy testtaint --image=nginx --replicas=6
+# check all pods are on worker-1 now:
+kubectl get pods -o wide --sort-by="{.spec.nodeName}"
+# add toleration
+kubectl edit deploy testtaint
+# check pods are now running on worker-2 too
+kubectl get pods -o wide --sort-by="{.spec.nodeName}"
+```
+
+```yaml
+template:
+  spec:
+    tolerations:
+    - effect: NoSchedule
+      key: diskType
+      operator: Equal
+      value: hdd
+```
