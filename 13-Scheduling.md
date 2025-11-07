@@ -32,17 +32,17 @@ https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinit
 
 https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
 
-- taints are applied to node to mark that the node should not accept any pod that doesn't tolerate the taint
-- tolerations are applied to pods and allow (not require) pods to schedule on nodes with matching taints
+- taints: are applied to node to mark that the node should not accept any pod that doesn't tolerate the taint
+- tolerations: are applied to pods and allow (not require) pods to schedule on nodes with matching taints
 - vs affinity: affinity used on pods to atract them to specific nodes; taints used on nodes to repel set of pods
 - ensure dedicated nodes are used for dedicated tasks
-- `NoSchedule`: does not schedule new pods
-- `PreferNoSchedule`: does not schedule new pods unless there is not other option
-- `NoExecute`: migrates existing pods away from this node
+- effects:
+  - `NoSchedule`: does not schedule new pods
+  - `PreferNoSchedule`: does not schedule new pods unless there is not other option
+  - `NoExecute`: migrates existing pods away from this node
 - control plane nodes automatically get taints to avoid scheduling user pods
 - `kubectl drain` and `kubectl cordon` applies taints
 - taints are set automatically when node has critical condition e.g. out of disk space, network unavailable, memory pressure
 - `kubectl taint` or `kubectl edit` to manually taint nodes
-- when defining toleration, the pod needs `key`, `operator`, `value`
+- when defining toleration, the pod needs `key`, `operator`, `value`, `effect`
   - default operator is `Equal` but `Exists` is also commonly used
-  - 
