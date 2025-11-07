@@ -58,6 +58,8 @@ kubectl get pods -o wide --sort-by="{.spec.nodeName}"
 kubectl edit deploy testtaint
 # check pods are now running on worker-2 too
 kubectl get pods -o wide --sort-by="{.spec.nodeName}"
+# untaint node
+kubectl taint node worker-2 diskType=hdd:NoSchedule-
 ```
 
 ```yaml
