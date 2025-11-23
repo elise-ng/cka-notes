@@ -15,6 +15,12 @@
 - For another namespace, use `servicename.namespace.svc.clustername`
 - `clustername` defined at coredns configmap, default is `cluster.local`
   - `kubectl get cm -n kube-system coredns -o yaml`
+ 
+## CoreDNS
+- runs in kube-system namespace
+- coredns pods will be pending until network plugin is available
+- any changes to the config (e.g. add external DNS forwarder) needs to be added to the coredns configmap
+  - `data.Corefile`  
 
 ## NetworkPolicies
 Ref: [](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
