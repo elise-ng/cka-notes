@@ -103,3 +103,31 @@ spec:
     - name: myapp
       port: 80
 ```
+
+## Demo: TLS Termination at Gateway with self signed cert
+- We can terminate TLS traffic at either gateway or the endpoint application
+
+```sh
+# generate cert and create secret in k8s
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=myapp.com"
+kubectl create secret tls myapp-tls --cert=tls.crt --key=tls.key
+# set gateway to terminate tls
+kubectl edit gateway gateway
+# set tls config, see below
+# test https
+curl https://myapp.com:30443 --insecure -v
+# should show handshake with the self signed cert in verbose log
+```
+
+```yaml
+spec:
+  - name: https
+    port: 443
+    protocol: HTTPS
+    hostname: "myapp.com"  # Optional: restrict to specific hostname
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - kind: Secret
+        name: myapp-tls
+```
