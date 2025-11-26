@@ -60,7 +60,7 @@ spec:
 ```
 
 `pod.yaml`
-```
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
