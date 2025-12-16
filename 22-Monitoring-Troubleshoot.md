@@ -42,3 +42,12 @@
 - `sudo systemctl status kubelet`: show kubelet status info
   - `sudo systemctl restart kubelet`
 - `sudo openssl x509 -in /var/lib/kubelet/pki/kubelet.crt -text`: verify kubelet certs still valid
+
+## Troubleshoot Application Access
+- Ingress -> Service -> Pods
+- `selector` label used for matching, check the labels if doesn't work
+- `kubectl describe ing myapp`: check if backends are connected
+- `kubectl get svc`: check if service is working
+  - try curl the cluster ip shown from node
+- `kubectl get pods -n kube-system`: check if ingress is running
+  - `kubectl get ns`, `kubectl get all -n ingress-nginx`: if any ingress controller is running
